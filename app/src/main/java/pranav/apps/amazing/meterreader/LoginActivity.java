@@ -33,7 +33,8 @@ public class LoginActivity extends AppCompatActivity {
     @BindView(R.id.name) EditText name;
     @BindView(R.id.password) EditText password;
     @BindView(R.id.login) ImageView login;
-    private String URL_LOGIN = "https://pranavgupta4321.000webhostapp.com/metereader/endpoints/login.php";
+    //private String URL_LOGIN = "https://pranavgupta4321.000webhostapp.com/metereader/endpoints/login.php";
+    private String URL_LOGIN = "http://192.168.64.2/MeterReader/endpoints/login.php";
     private ProgressDialog progressDialog;
 
     @OnClick(R.id.login)
@@ -73,12 +74,11 @@ public class LoginActivity extends AppCompatActivity {
 
         StringRequest strReq = new StringRequest(Request.Method.POST,
                 URL_LOGIN, new Response.Listener<String>() {
-
             @Override
             public void onResponse(String response) {
 
                 try {
-                    //Toast.makeText(LoginActivity.this,response,Toast.LENGTH_LONG).show();
+                    //Toast.makeText(LoginActivity.this,"Got Response...",Toast.LENGTH_LONG).show();
                     JSONObject jObj = new JSONObject(response);
                     boolean error = jObj.getBoolean("error");
 
@@ -97,6 +97,7 @@ public class LoginActivity extends AppCompatActivity {
                         progressDialog.dismiss();
                         // Error in login. Get the error message
                         String errorMsg = jObj.getString("error");
+                        Log.i("Response Error:", errorMsg);
                         Toast.makeText(getApplicationContext(), errorMsg, Toast.LENGTH_LONG).show();
                     }
                 } catch (JSONException e) {
@@ -110,7 +111,8 @@ public class LoginActivity extends AppCompatActivity {
 
             @Override
             public void onErrorResponse(VolleyError error) {
-                Log.e(LoginActivity.class.getSimpleName(), "Login Error: " + error.getMessage());
+                Log.e(LoginActivity.class.getSimpleName(), "Login2 Error: " + error.getMessage());
+                progressDialog.dismiss();
                 Toast.makeText(getApplicationContext(),
                         error.getMessage(), Toast.LENGTH_LONG).show();
             }
